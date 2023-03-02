@@ -4,8 +4,7 @@ class ElevatorSystem(models.Model):
   '''
   This is Elevator system Model. Equivalent to a building containing a number of elevators
   Also contains the default ID parameter assigned by django as a primary key.
-  Used to make the project compatible with multiple elevator systems.
-  Minimum floor is assumed as 0 but dynamic minimum floor can be implemented easily.
+  Minimum floor is assumed as 0 initially.
   '''
   system_name = models.CharField(max_length = 20)
   max_floor = models.IntegerField()
@@ -18,12 +17,12 @@ class ElevatorSystem(models.Model):
 
 class Elevator(models.Model):
   '''
-  Elevator object model. Represents a single elevator that can move up and down. It
-  is always a part of an entire elevator system. So elevator system is assigned as foreignkey.
+  This is elevator model. Represents a single elevator that can move up and down. It
+  is always a part of an entire elevator system. 
   
   '''
 
-  # Django integerchoicefield
+  # made a class for integer choice field
   class RunningStatus(models.IntegerChoices):
     '''
     Choices for running status of the elevator system
@@ -33,10 +32,8 @@ class Elevator(models.Model):
     GOING_DOWN = -1
 
   elevator_system = models.ForeignKey(ElevatorSystem , on_delete=models.CASCADE)
-
   elevator_number = models.IntegerField()
   current_floor = models.PositiveSmallIntegerField(default=0)
-
   is_operational = models.BooleanField(default=True)
   is_door_open = models.BooleanField(default=True)
   running_status = models.IntegerField(choices=RunningStatus.choices,default=0)
@@ -45,7 +42,6 @@ class Elevator(models.Model):
   def __str__(self) -> str:
     return_str = "Elevator Number" + str(self.elevator_number)
     return return_str
-
 
 
 class ElevatorRequest(models.Model):
