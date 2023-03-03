@@ -13,7 +13,7 @@ Some of the packages are not up-to date with python 3.9 or 3.10
 git clone https://github.com/PriyaRani10/Elevator-Problem-.git
 ```
 ```
-cd Elevator-problem
+cd Elevator-problem-
 ```
 
 3. Install the requirements
