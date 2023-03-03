@@ -29,7 +29,9 @@ python manage.py runserver
 
 1. The code is repeatative in some cases as I have used each view only for one type of HTTP Method to provide a better understanding.
 
-2. PostgreSQL DB is used for portability in GitHub, whose deatail I have mentioned in the .env file using config. 
+2. PostgreSQL DB is used for portability in GitHub, whose deatail I have mentioned in the .env file using config.
+
+3. I have made 2 branch: main and develope. All my codes are in Develop branches for now.
 ```
 ```
 
