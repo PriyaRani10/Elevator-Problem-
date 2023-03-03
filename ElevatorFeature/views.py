@@ -100,7 +100,7 @@ class ListCreateElevatorRequest(generics.ListCreateAPIView):
 
 
   '''
-  List all the requests for a given elevator
+  fetch all the requests for a given elevator
   Requests already served can be filtered with is_active
   parameter set false
   '''
@@ -115,6 +115,57 @@ class ListCreateElevatorRequest(generics.ListCreateAPIView):
 
     queryset = ElevatorRequest.objects.filter(elevator = elevator_object)
     return queryset
+  
+
+class FetchDestinationView(APIView):
+  '''
+  Fetch the next destination floor for a given elevator
+  '''
+  def get(self, request, id, pk):
+    system_id = id
+    elevator_number = pk
+
+    elevator_object = Elevator.objects.filter(
+      elevator_system__id = system_id,
+      elevator_number = elevator_number
+    )
+
+    requests_pending = ElevatorRequest.objects.filter(
+      elevator = elevator_object[0],
+      is_active = True,
+    ).order_by('request_time')
+
+    return_dict = {}
+
+    if elevator_object.count() !=1:
+      return_dict = {
+        'running' : False,
+        'details' : 'The Elevator number is incorrect'
+      }
+      
+    elif not elevator_object[0].is_operational:
+      return_dict = {
+        'running' : False,
+        'details' : 'The Elevator is not operational'
+      }
+    elif requests_pending.count() == 0:
+      return_dict = {
+        'running' : False,
+        'details' : 'The Elevator is not running currently, No pending requests'
+      }
+    elif requests_pending[0].requested_floor == elevator_object[0].current_floor:
+      return_dict = {
+        'running' : True,
+        'details' : str(requests_pending[0].destination_floor)
+      }
+    else:
+      return_dict = {
+        'running' : True,
+        'details' : str(requests_pending[0].requested_floor)
+      }
+
+    return Response(return_dict)
+
     
 
 
