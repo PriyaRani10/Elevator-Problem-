@@ -43,6 +43,25 @@ class CreateElevatorSystem(generics.CreateAPIView):
       number_of_elevators=serializer.data['number_of_elevators'],
       system_id=serializer.data['id']
     )
+
+
+class ViewSingleElevatorDetail(generics.RetrieveAPIView):
+  '''
+  Get  the details of a specific elevator that we want, 
+  given its elevator system and elevator number
+  '''
+  serializer_class = ElevatorSerializer
+
+  def  get_object(self):
+    system_id = self.kwargs['id']
+    elevator_number = self.kwargs['pk']
+
+    queryset = Elevator.objects.filter(
+      elevator_system__id = system_id,
+      elevator_number = elevator_number
+    )
+
+    return queryset[0]
   
   
 
